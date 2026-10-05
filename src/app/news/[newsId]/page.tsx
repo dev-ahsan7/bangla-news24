@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { formatDate } from '@/lib/formatDate';
 import type { ArticleDetail } from '@/types/news';
+import { notFound } from 'next/navigation';
 
 interface NewsPageProps {
   params: Promise<{ newsId: string }>;
@@ -17,6 +18,10 @@ const NewsPage = async ({ params }: NewsPageProps) => {
   const news: ArticleDetail = data.data;
 
   // description is a rich-text object, so take the first paragraph as the intro
+
+  if (!news) {
+    notFound();
+  }
   const intro = news.description?.blocks?.[0]?.model?.blocks?.[0]?.model?.text;
 
   return (

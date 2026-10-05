@@ -18,7 +18,7 @@ const Marquee = async () => {
         <MarqueeText className="py-1.5" direction="right" duration={10}>
           {headlines.map((h) => (
             <span key={h.id}>
-              <Link className="hover:underline" href={h.id}>
+              <Link className="hover:underline" href={`/news/${h.id}`}>
                 {h.title}
               </Link>
               <span className="mx-5">•</span>

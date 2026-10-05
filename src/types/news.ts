@@ -20,7 +20,6 @@ export interface TextBlock {
 
 export type BodyBlock = ImageBlock | TextBlock;
 
-// Rich-text shape of `description` in the single-article response
 export interface DescriptionFragment {
   type: string;
   model: { text: string; attributes: unknown[] };
@@ -62,4 +61,37 @@ export interface ArticleDetailResponse {
   success: boolean;
   cachedAt: string;
   data: ArticleDetail;
+}
+
+// ---------- NEW: used by the home page ----------
+
+export interface NewsArticle {
+  id: string;
+  title: string;
+  description: string | null;
+  link: string;
+  imageUrl: string;
+  imageAlt: string;
+  category: string;
+  type: 'article' | 'commentary' | 'video' | 'link';
+  isLive: boolean;
+  firstPublished: string | null;
+  lastPublished: string | null;
+  source: string;
+}
+
+export interface NewsSection {
+  title: string;
+  curationId: string;
+  curationType: string;
+  link: string | null;
+  count: number;
+  articles: NewsArticle[];
+}
+
+export interface SectionsResponse {
+  success: boolean;
+  count: number;
+  cachedAt: string;
+  data: NewsSection[];
 }

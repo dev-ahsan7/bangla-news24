@@ -1,22 +1,33 @@
 import MainNews from '@/components/News/MainNews';
 import MostRead from '@/components/News/MostRead';
 import NewsCard from '@/components/News/NewsCard';
-import type { SectionsResponse } from '@/types/news';
+import { SectionsResponse } from '@/types/news';
 
 export default async function Home() {
   const res = await fetch('https://news-api-v2.vercel.app/api/news/sections');
   const { data: sections }: SectionsResponse = await res.json();
 
   const [mainSection, ...otherSections] = sections;
+  const mainNews = mainSection.articles.map((article) => ({
+    ...article,
+    description: article.description ?? '',
+  }));
+  const sanitizedOtherSections = otherSections.map((section) => ({
+    ...section,
+    articles: section.articles.map((article) => ({
+      ...article,
+      description: article.description ?? '',
+    })),
+  }));
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 px-4 mt-4">
       {/* News section */}
       <div className="min-w-0 lg:col-span-2">
-        <MainNews news={mainSection.articles} />
+        <MainNews news={mainNews} />
 
         <div className="grid gap-8 mt-8">
-          {otherSections.map((os) => (
+          {sanitizedOtherSections.map((os) => (
             <section key={os.curationId}>
               <h2 className="font-bold text-lg border-b-2 border-red-700 pb-1 mb-4">
                 {os.title}
